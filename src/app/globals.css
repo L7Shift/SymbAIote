@@ -595,6 +595,13 @@ body::before {
   padding: 0.5rem 1.5rem;
   border: 1px solid var(--cyan);
   background: rgba(0, 229, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.specimen-quick:hover {
+  background: var(--cyan);
+  color: var(--void);
 }
 
 .specimen-info {
@@ -649,12 +656,217 @@ body::before {
   color: var(--void);
   background: var(--cyan);
   padding: 0.6rem 1.2rem;
+  border: none;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .specimen-card:hover .specimen-cta {
   background: var(--white);
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+/* ============================================
+   QUICK VIEW MODAL
+   ============================================ */
+.quick-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 8, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.quick-modal {
+  background: var(--ink);
+  border: 1px solid var(--gray-600);
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.quick-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.quick-modal-close:hover {
+  color: var(--white);
+}
+
+.quick-modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.quick-modal-image {
+  background: #0a0a0a;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.quick-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quick-modal-details {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-modal-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  margin-bottom: 0.75rem;
+}
+
+.quick-modal-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.quick-modal-tagline {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1rem;
+  color: var(--magenta);
+  margin-bottom: 1rem;
+}
+
+.quick-modal-desc {
+  font-size: 0.95rem;
+  color: var(--gray-400);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.quick-modal-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+.quick-modal-sizes {
+  margin-bottom: 1.5rem;
+}
+
+.sizes-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-500);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.sizes-grid {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.size-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.75rem 1rem;
+  background: var(--gray-700);
+  border: 1px solid var(--gray-600);
+  color: var(--gray-300);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.size-btn:hover {
+  border-color: var(--gray-400);
+  color: var(--white);
+}
+
+.size-btn.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--void);
+}
+
+.quick-modal-cart {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, var(--cyan), var(--magenta));
+  border: none;
+  color: var(--void);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.quick-modal-cart:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+}
+
+.quick-modal-cart.added {
+  background: var(--acid);
+}
+
+.quick-modal-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .quick-modal-content {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-modal-image {
+    aspect-ratio: 4/3;
+  }
+
+  .quick-modal-details {
+    padding: 2rem 1.5rem;
+  }
+
+  .quick-modal-name {
+    font-size: 2rem;
+  }
 }
 
 /* ============================================
