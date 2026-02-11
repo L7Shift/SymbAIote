@@ -50,20 +50,6 @@ export default function BondSignup() {
           )}
         </div>
 
-        <div className="bond-stats">
-          <div className="stat">
-            <span className="stat-number">2,847</span>
-            <span className="stat-label">BONDED</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">4</span>
-            <span className="stat-label">SPECIMENS</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">∞</span>
-            <span className="stat-label">PERMANENT</span>
-          </div>
-        </div>
       </div>
     </section>
   )
