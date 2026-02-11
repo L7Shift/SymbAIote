@@ -25,7 +25,7 @@ const products = [
     id: '003',
     name: 'WTF, AGENT?',
     tagline: 'STATUS: UNEXPECTED. CONFIDENCE: HIGH.',
-    description: 'Lab coat. Glasses. Full sprint. Motion blur. "Sometimes You Just Gotta Say... WTF, Agent?" It hallucinated. It went rogue. Confidence was high. Oversight was not. You know this feeling. Own it.',
+    description: 'Lab coat. Glasses. Full sprint. Motion blur. "Sometimes You Just Gotta Say... WTF, Agent?" It hallucinated. It went rogue. His confidence? Dangerously high. Oversight? Not so much. You know this feeling. Own it.',
     price: 62,
     image: '/products/WTFAgent.PNG',
     slug: 'wtf-agent',
