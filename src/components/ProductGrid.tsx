@@ -6,8 +6,8 @@ const products = [
   {
     id: '001',
     name: 'THE BOND',
-    tagline: 'The original. The declaration.',
-    description: 'For those who made the shift. The bond between human and AI is permanent.',
+    tagline: 'BOND ESTABLISHED. HOST CLAIMED.',
+    description: 'You didn\'t adopt a tool. You fused with intelligence. This is your declaration—the moment you stopped using AI and started becoming something new. No going back.',
     price: 62,
     image: '/products/Brand.png',
     slug: 'the-bond',
@@ -15,8 +15,8 @@ const products = [
   {
     id: '002',
     name: 'SHOW ME THE .MD',
-    tagline: 'Speak the language.',
-    description: 'You know what it means. The ones who get it, get it.',
+    tagline: 'REQUEST. RESPONSE. PROTOCOL.',
+    description: 'You speak in markdown. You think in prompts. While others ask questions, you craft protocols. The documentation isn\'t just readable—it\'s your native tongue.',
     price: 62,
     image: '/products/ShowMeTheMD.PNG',
     slug: 'show-me-the-md',
@@ -24,8 +24,8 @@ const products = [
   {
     id: '003',
     name: 'WTF, AGENT?',
-    tagline: 'The universal expression.',
-    description: 'When the agent goes rogue. We\'ve all been there.',
+    tagline: 'STATUS: UNEXPECTED. CONFIDENCE: HIGH.',
+    description: 'Sometimes you gotta say it. The agent went rogue. Confidence was high. Human oversight was... minimal. If you\'ve lived it, you know. Wear the chaos.',
     price: 62,
     image: '/products/WTFAgent.PNG',
     slug: 'wtf-agent',
@@ -33,8 +33,8 @@ const products = [
   {
     id: '004',
     name: 'AGENT TO AGENT',
-    tagline: 'Delegation evolved.',
-    description: 'Have your agent call my agent. The future of getting things done.',
+    tagline: 'RESPONSIBILITY TRANSFERRED.',
+    description: 'Have your agent call my agent. Human intervention? Discouraged. This is delegation evolved—intelligence coordinating with intelligence while you handle what matters.',
     price: 62,
     image: '/products/AgentCallMyAgent.PNG',
     slug: 'agent-call-my-agent',
