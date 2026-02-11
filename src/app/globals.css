@@ -1,26 +1,954 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cyan: #00e5ff;
+  --magenta: #ff2d7b;
+  --hot-pink: #ff0066;
+  --acid: #00ff88;
+  --void: #050508;
+  --ink: #0a0a10;
+  --white: #ffffff;
+  --gray-100: rgba(255, 255, 255, 0.9);
+  --gray-200: rgba(255, 255, 255, 0.7);
+  --gray-300: rgba(255, 255, 255, 0.5);
+  --gray-400: rgba(255, 255, 255, 0.3);
+  --gray-500: rgba(255, 255, 255, 0.15);
+  --gray-600: rgba(255, 255, 255, 0.08);
+  --gray-700: rgba(255, 255, 255, 0.04);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cyan: var(--cyan);
+  --color-magenta: var(--magenta);
+  --color-void: var(--void);
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-body: 'Chakra Petch', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--void);
+  color: var(--gray-200);
+  font-family: 'Chakra Petch', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Noise overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+::selection {
+  background: var(--cyan);
+  color: var(--void);
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 3rem;
+  background: rgba(5, 5, 8, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  display: flex;
+}
+
+.nav-brand .sym, .footer-logo .sym { color: var(--white); }
+.nav-brand .bai, .footer-logo .bai {
+  color: var(--cyan);
+  text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+}
+.nav-brand .ote, .footer-logo .ote {
+  color: var(--magenta);
+  text-shadow: 0 0 30px rgba(255, 45, 123, 0.5);
+}
+
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-400);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--cyan);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--white);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-cart {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.nav-cart:hover {
+  color: var(--cyan);
+}
+
+.cart-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  background: var(--cyan);
+  color: var(--void);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(255, 45, 123, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(0, 255, 136, 0.04) 0%, transparent 50%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.hero-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--cyan);
+  margin-bottom: 2rem;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.7; text-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
+  50% { opacity: 1; text-shadow: 0 0 40px rgba(0, 229, 255, 0.6); }
+}
+
+.brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 15vw, 12rem);
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  margin-bottom: 0.5em;
+}
+
+.brand-name .b-sym { color: var(--white); }
+.brand-name .b-bai {
+  color: var(--cyan);
+  text-shadow:
+    0 0 60px rgba(0, 229, 255, 0.4),
+    0 0 120px rgba(0, 229, 255, 0.2);
+  animation: glow-shift 4s ease-in-out infinite;
+}
+.brand-name .b-ote {
+  color: var(--magenta);
+  text-shadow:
+    0 0 60px rgba(255, 45, 123, 0.4),
+    0 0 120px rgba(255, 45, 123, 0.2);
+}
+
+@keyframes glow-shift {
+  0%, 100% {
+    text-shadow: 0 0 60px rgba(0, 229, 255, 0.4), 0 0 120px rgba(0, 229, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 80px rgba(0, 229, 255, 0.6), 0 0 160px rgba(0, 229, 255, 0.3);
+  }
+}
+
+.hero-line {
+  width: 100px;
+  height: 3px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  position: relative;
+  animation: line-glow 3s ease-in-out infinite;
+}
+
+.hero-line::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: inherit;
+  filter: blur(10px);
+  opacity: 0.6;
+}
+
+@keyframes line-glow {
+  0%, 100% { opacity: 0.8; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.1); }
+}
+
+.hero-statement {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  color: var(--gray-300);
+  margin-bottom: 3rem;
+  letter-spacing: 0.05em;
+}
+
+.hero-statement em {
+  font-style: normal;
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.hero-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-primary {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: var(--void);
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  padding: 1rem 3rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--magenta) 0%, var(--cyan) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 40px rgba(0, 229, 255, 0.3),
+    0 0 60px rgba(255, 45, 123, 0.2);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary span {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--gray-500);
+  transition: color 0.3s ease;
+}
+
+.hero-scroll:hover {
+  color: var(--cyan);
+}
+
+.hero-scroll span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--cyan), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; height: 40px; }
+  50% { opacity: 0.8; height: 50px; }
+}
+
+/* ============================================
+   MANIFESTO SECTION
+   ============================================ */
+.manifesto {
+  padding: 10rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.manifesto::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100px;
+  background: linear-gradient(180deg, transparent, var(--cyan), transparent);
+}
+
+.manifesto-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.m-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--magenta);
+  margin-bottom: 3rem;
+}
+
+.m-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 3rem;
+}
+
+.m-heading em {
+  font-style: normal;
+  color: var(--cyan);
+  text-shadow: 0 0 40px rgba(0, 229, 255, 0.4);
+}
+
+.m-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  margin: 0 auto 3rem;
+}
+
+.m-content {
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.m-content p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--gray-300);
+  margin-bottom: 1.5rem;
+}
+
+.m-lead {
+  font-size: 1.2rem !important;
+  color: var(--gray-200) !important;
+}
+
+.m-content strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.m-highlight {
+  font-size: 1.3rem !important;
+  color: var(--cyan) !important;
+  font-weight: 500;
+  text-align: center;
+  margin: 2.5rem 0 !important;
+}
+
+.m-closing {
+  text-align: center;
+}
+
+.m-closing em {
+  font-style: normal;
+  color: var(--magenta);
+}
+
+.m-tagline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-500);
+  margin-top: 4rem;
+  text-align: center;
+}
+
+/* ============================================
+   SPECIMENS / PRODUCTS SECTION
+   ============================================ */
+.specimens {
+  padding: 8rem 2rem 10rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.specimens-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.specimens-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--acid);
+  margin-bottom: 1.5rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--acid);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--acid);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+.specimens-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--white);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.specimens-sub {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1rem;
+  color: var(--gray-400);
+}
+
+.specimens-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.specimen-card {
+  background: var(--gray-700);
+  border: 1px solid var(--gray-600);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.specimen-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 10;
+}
+
+.specimen-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--gray-500);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 229, 255, 0.05);
+}
+
+.specimen-card:hover::before {
+  transform: scaleX(1);
+}
+
+.specimen-image {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.specimen-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  filter: brightness(0.9);
+}
+
+.specimen-card:hover .specimen-image img {
+  transform: scale(1.08);
+  filter: brightness(1);
+}
+
+.specimen-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(5, 5, 8, 0.9) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.specimen-card:hover .specimen-overlay {
+  opacity: 1;
+}
+
+.specimen-quick {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--cyan);
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.specimen-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.specimen-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.specimen-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.specimen-tagline {
+  font-size: 0.85rem;
+  color: var(--gray-400);
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.specimen-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-600);
+}
+
+.specimen-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.specimen-cta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--void);
+  background: var(--cyan);
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.specimen-card:hover .specimen-cta {
+  background: var(--white);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+/* ============================================
+   BOND / SIGNUP SECTION
+   ============================================ */
+.bond-section {
+  padding: 8rem 2rem;
+  background: linear-gradient(180deg, transparent, rgba(0, 229, 255, 0.02), transparent);
+  position: relative;
+}
+
+.bond-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.bond-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--white);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.bond-desc {
+  font-size: 1rem;
+  color: var(--gray-400);
+  margin-bottom: 2rem;
+}
+
+.bond-form {
+  display: flex;
+  gap: 0;
+}
+
+.bond-input {
+  flex: 1;
+  background: var(--gray-700);
+  border: 1px solid var(--gray-600);
+  border-right: none;
+  padding: 1rem 1.25rem;
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.bond-input::placeholder {
+  color: var(--gray-500);
+}
+
+.bond-input:focus {
+  border-color: var(--cyan);
+  background: rgba(0, 229, 255, 0.03);
+}
+
+.bond-btn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--void);
+  background: linear-gradient(135deg, var(--cyan), var(--magenta));
+  border: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bond-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+}
+
+.bond-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.bond-success {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.success-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--cyan);
+  color: var(--void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border-radius: 50%;
+}
+
+.bond-success p {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--cyan);
+}
+
+.bond-stats {
+  display: flex;
+  gap: 3rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-500);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  border-top: 1px solid var(--gray-700);
+  padding: 4rem 3rem 2rem;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gray-500);
+}
+
+.footer-links-group {
+  display: flex;
+  gap: 5rem;
+}
+
+.footer-col h4 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-400);
+  margin-bottom: 1.25rem;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.footer-col a:hover {
+  color: var(--cyan);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-700);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-bottom p {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--gray-500);
+  letter-spacing: 0.05em;
+}
+
+.footer-credit a {
+  color: var(--cyan);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.footer-credit a:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+  .specimens-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .nav {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .specimens-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .bond-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .bond-form {
+    flex-direction: column;
+  }
+
+  .bond-input {
+    border-right: 1px solid var(--gray-600);
+    border-bottom: none;
+  }
+
+  .bond-stats {
+    justify-content: center;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .footer-links-group {
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-statement {
+    padding: 0 1rem;
+  }
+
+  .m-content {
+    text-align: center;
+  }
+
+  .bond-stats {
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
